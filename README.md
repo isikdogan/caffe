@@ -1,3 +1,27 @@
+# Class-weighted loss layer
+
+This is a fork of Caffe that supports class weigths in the loss function to tackle class imbalance. The loss layer is adapted from [SegNet](https://github.com/alexgkendall/caffe-segnet/) to the most recent version of Caffe. Example use:
+
+    layer {
+      name: "loss"
+      type: "SoftmaxWithLoss"
+      bottom: "fuse1"
+      bottom: "ground_truth"
+      top: "loss"
+      loss_param: {
+        ignore_label: 0
+        normalize: false
+        weight_by_label_freqs: true
+        class_weighting: 0
+        class_weighting: 0.253
+        class_weighting: 0.455
+        class_weighting: 1.46
+        class_weighting: 1.39
+        class_weighting: 1
+      }
+    }
+
+
 # Caffe
 
 [![Build Status](https://travis-ci.org/BVLC/caffe.svg?branch=master)](https://travis-ci.org/BVLC/caffe)
