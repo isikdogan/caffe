@@ -1,11 +1,16 @@
-# Class-weighted loss layer
+# Caffe-RivaMap
 
-This is a fork of Caffe that supports class weigths in the loss function to tackle class imbalance. The loss layer is adapted from [SegNet](https://github.com/alexgkendall/caffe-segnet/) to the most recent version of Caffe. Example use:
+This is a modified version of Caffe, a deep learning framework, that implements the following additional layers:
+
+
+## Class-weighted loss layer
+
+This layer supports class weigths in the loss function to tackle class imbalance. The code is adapted from [SegNet](https://github.com/alexgkendall/caffe-segnet/) to the most recent version of Caffe. Example use:
 
     layer {
       name: "loss"
       type: "SoftmaxWithLoss"
-      bottom: "fuse1"
+      bottom: "fc7"
       bottom: "ground_truth"
       top: "loss"
       loss_param: {
@@ -20,6 +25,18 @@ This is a fork of Caffe that supports class weigths in the loss function to tack
         class_weighting: 1
       }
     }
+
+
+## L2-normalization layer
+
+This layer normalizes layer activations by dividing the activations by the l2-norm. The code is adapted from the [Softmax](https://github.com/BVLC/caffe/blob/master/src/caffe/layers/softmax_layer.cpp) and [Normalize](https://github.com/kuprel/caffe/blob/master/src/caffe/layers/normalize_layer.cpp) layers. Example use:
+
+	layer {
+	  name: "norm1"
+	  type: "Normalization"
+	  bottom: "conv1"
+	  top: "norm1"
+	}
 
 
 # Caffe
