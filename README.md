@@ -29,13 +29,23 @@ This layer supports class weigths in the loss function to tackle class imbalance
 
 ## L2-normalization layer
 
-This layer normalizes layer activations by dividing the activations by the l2-norm. The code is adapted from the [Softmax](https://github.com/BVLC/caffe/blob/master/src/caffe/layers/softmax_layer.cpp) and [Normalize](https://github.com/kuprel/caffe/blob/master/src/caffe/layers/normalize_layer.cpp) layers. Example use:
+This layer normalizes layer activations by dividing the activations by the l2-norm. The code is adapted from the [Caffe Softmax](https://github.com/BVLC/caffe/blob/master/src/caffe/layers/softmax_layer.cpp) and [ParseNet Normalize](https://github.com/weiliu89/caffe/tree/fcn) layers. Example use:
 
 	layer {
 	  name: "norm1"
 	  type: "Normalization"
 	  bottom: "conv1"
 	  top: "norm1"
+	  norm_param {
+	    scale_filler {
+	      type: "constant"
+	      value: 10
+	    }
+	    across_spatial: false
+	    channel_shared: false
+	    fix_scale: false
+	    eps = 1e-10
+	  }
 	}
 
 

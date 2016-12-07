@@ -5,6 +5,7 @@
 
 #include "caffe/blob.hpp"
 #include "caffe/layer.hpp"
+#include "caffe/filler.hpp"
 #include "caffe/proto/caffe.pb.h"
 
 namespace caffe {
@@ -21,6 +22,8 @@ class NormalizationLayer : public Layer<Dtype> {
       : Layer<Dtype>(param) {}
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
+  virtual void LayerSetUp(const vector<Blob<Dtype>*>& bottom,
+      const vector<Blob<Dtype>*>& top);
   virtual inline const char* type() const { return "Normalization"; }
   virtual inline int ExactNumBottomBlobs() const { return 1; }
   virtual inline int ExactNumTopBlobs() const { return 1; }
@@ -35,7 +38,12 @@ class NormalizationLayer : public Layer<Dtype> {
   virtual void Backward_gpu(const vector<Blob<Dtype>*>& top,
      const vector<bool>& propagate_down, const vector<Blob<Dtype>*>& bottom);
 
-  Blob<Dtype> squared_;
+  Blob<Dtype> norm_;
+  Blob<Dtype> sum_channel_multiplier_, sum_spatial_multiplier_;
+  Blob<Dtype> buffer_, buffer_channel_, buffer_spatial_;
+  bool across_spatial_;
+  bool channel_shared_;
+  Dtype eps_;
 
 };
 
